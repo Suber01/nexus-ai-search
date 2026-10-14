@@ -39,17 +39,22 @@ def search(query, index):
     return result
     
 
-index = build_index(documents)
-
-
-
-
-
 def ranking(result):    
     return dict(sorted(result.items(), key=lambda x:x[1], reverse = True))
 
-print(search("lambda timeout", index))
-print(search("docker", index))
-print(search("spark repartition", index))
+
+
+if __name__ == "__main__": 
+    index = build_index(documents)
+
+    result = search("lambda timeout", index)
+    print(ranking(result))
+
+    result = search("docker", index)
+    print(ranking(result))
+
+    result = search("spark repartition", index)
+    print(ranking(result))
+
 
 
