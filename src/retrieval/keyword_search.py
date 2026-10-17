@@ -1,5 +1,23 @@
 import string 
 
+STOP_WORDS = {
+    "how",
+    "can",
+    "i",
+    "the",
+    "a",
+    "an",
+    "is",
+    "are",
+    "and",
+    "or",
+    "to",
+    "of",
+    "in",
+    "for",
+}
+
+
 documents = {
      "D1": "AWS Lambda functions have a maximum execution timeout.",
     "D2": "Python dictionaries store key-value pairs.",
@@ -12,7 +30,13 @@ documents = {
 def tokenize(text):
     text = text.lower()
     text = text.translate(str.maketrans("", "", string.punctuation))
-    return text.split()
+    tokens =  text.split()
+    return [
+        token
+        for token in tokens
+        if token not in STOP_WORDS
+    ]
+
 
 #This builds inverted index 
 def build_index(documents):

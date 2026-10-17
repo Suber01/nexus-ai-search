@@ -50,3 +50,17 @@ def test_search_empty_query():
     result = search("", index)
 
     assert result == {}
+
+def test_tokenize_removes_stop_words():
+    assert tokenize("How can I run code?") == ["run", "code"]
+
+
+def test_tokenize_preserves_meaningful_words():
+    assert tokenize("run code without servers") == [
+        "run", "code", "without", "servers"
+    ]
+
+
+def test_search_returns_empty_for_no_matching_terms():
+    index = build_index(documents)
+    assert search("run code without servers", index) == {}

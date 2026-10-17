@@ -1,21 +1,29 @@
 import math
-from src.retrieval.keyword_search import tokenize, documents, build_index, ranking
+
+from src.retrieval.keyword_search import (
+    tokenize,
+    documents,
+    build_index,
+    ranking,
+)
+
 
 def term_frequency(term, document):
     tokens = tokenize(document)
-    
-    return tokens.count(term)
+    return tokens.count(term.lower())
+
 
 def inverse_document_frequency(term, documents):
     index = build_index(documents)
 
-    N = len(documents)
-    df = len(index.get(term.lower(), set()))
+    total_documents = len(documents)
+    document_frequency = len(index.get(term.lower(), set()))
 
-    if df == 0:
+    if document_frequency == 0:
         return 0
 
-    return math.log(N / df)
+    return math.log(total_documents / document_frequency)
+
 
 def tf_idf(term, document, documents):
     tf = term_frequency(term, document)
@@ -24,10 +32,6 @@ def tf_idf(term, document, documents):
     return tf * idf
 
 
-'''
-query — what the user searches for.
-document — the text of the current document.
-documents — the entire collection.'''
 def score_document(query, document, documents):
     query_tokens = tokenize(query)
     score = 0
@@ -37,7 +41,11 @@ def score_document(query, document, documents):
 
     return score
 
+
 def search_tfidf(query, documents):
+    if not query or not query.strip():
+        return {}
+
     results = {}
 
     for doc_id, document in documents.items():
@@ -48,23 +56,8 @@ def search_tfidf(query, documents):
 
     return ranking(results)
 
-print(term_frequency("lambda", documents["D1"]))
-print(term_frequency("lambda", documents["D4"]))
-print(term_frequency("AWS", documents["D1"]))
 
-print(inverse_document_frequency("lambda", documents))
-print(inverse_document_frequency("repartition", documents))
-print(inverse_document_frequency("docker", documents))
-
-print(tf_idf("lambda", documents["D1"], documents))
-print(tf_idf("repartition", documents["D3"], documents))
-
-print(score_document("lambda timeout", documents["D1"], documents))
-print(score_document("lambda timeout", documents["D4"], documents))
-
-print(search_tfidf("lambda timeout", documents))
-
-results = search_tfidf("lambda timeout", documents)
-ranked_results = ranking(results)
-
-print(ranked_results)
+if __name__ == "__main__":
+    query = "lambda timeout"
+    results = search_tfidf(query, documents)
+    print(results)
