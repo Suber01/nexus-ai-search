@@ -29,13 +29,16 @@ documents = {
 
 def tokenize(text):
     text = text.lower()
+   
     text = text.translate(str.maketrans("", "", string.punctuation))
     tokens =  text.split()
+    print([token for token in tokens if token not in STOP_WORDS])
     return [
         token
         for token in tokens
         if token not in STOP_WORDS
     ]
+    
 
 
 #This builds inverted index 
