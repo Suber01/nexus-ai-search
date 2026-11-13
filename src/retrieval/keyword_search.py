@@ -23,7 +23,13 @@ documents = {
     "D2": "Python dictionaries store key-value pairs.",
     "D3": "Spark repartition can cause a shuffle operation.",
     "D4": "Lambda functions can be configured with memory and timeout.",
-    "D5": "SQL window functions allow calculations across related rows."
+    "D5": "SQL window functions allow calculations across related rows.",
+    "D6": (
+    "AWS Lambda is a serverless compute service "
+    "that allows developers to run code without "
+    "provisioning or managing servers. It automatically "
+    "handles the underlying infrastructure."
+)
 }
 
 
@@ -51,6 +57,7 @@ def build_index(documents):
         for token in tokens:
             if token not in index: 
                 index[token] = set()
+                
             index[token].add(doc_id)
     return index
 

@@ -31,3 +31,4 @@ def rerank(query, candidates):
         key=lambda result: result["rerank_score"],
         reverse=True
     )
+
