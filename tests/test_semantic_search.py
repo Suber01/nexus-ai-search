@@ -2,6 +2,7 @@
 from src.retrieval.semantic_search import search_semantic
 
 
+
 def test_empty_query_returns_empty_list():
     results = search_semantic("")
 

@@ -8,6 +8,13 @@ from src.retrieval.tfidf import (
     documents,
 )
 
+test_documents = {
+    "D1": "AWS Lambda functions have a maximum execution timeout.",
+    "D2": "Python dictionaries store key-value pairs.",
+    "D3": "Spark repartition can cause a shuffle operation.",
+    "D4": "Lambda functions can be configured with memory and timeout."
+}
+
 
 def test_term_frequency():
     assert term_frequency("lambda", documents["D1"]) == 1
@@ -23,7 +30,7 @@ def test_tf_idf():
 
 
 def test_search_tfidf():
-    results = search_tfidf("lambda timeout", documents)
+    results = search_tfidf("lambda timeout", test_documents)
     assert list(results.keys()) == ["D1", "D4"]
 
 
