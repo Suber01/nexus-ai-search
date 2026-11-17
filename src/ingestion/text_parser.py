@@ -14,14 +14,7 @@ def parse_text_file(file_path):
         char_start = char_position
         char_end = char_start + len(line)
 
-        print(
-            {
-                "char_start": char_start,
-                "char_end": char_end,
-                "line_start": line_number,
-                "text": line
-            }
-        )
+       
         char_position = char_end
 
 
