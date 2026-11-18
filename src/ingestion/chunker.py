@@ -1,5 +1,39 @@
+import re
+
 def split_text(text, separator):
-    return text.split(separator)
+    if not separator:
+        return list(text)
+
+    parts = re.split(f"({re.escape(separator)})", text)
+
+    chunks = []
+
+    for i in range(0, len(parts), 2):
+        piece = parts[i]
+
+        
+        if i + 1 < len(parts):
+            piece += parts[i + 1]
+
+        chunks.append(piece)
+
+    return chunks
+
+def merge_splits(splits, chunk_size):
+    chunks = []
+    current_chunk = ""
+
+    for split in splits:
+        if len(current_chunk) + len(split) <= chunk_size:
+            current_chunk += split
+        else:
+            chunks.append(current_chunk)
+            current_chunk = split
+
+    if current_chunk:
+        chunks.append(current_chunk)
+
+    return chunks
 
 def recursive_split(text, chunk_size, separators):
     if len(text) <= chunk_size:
@@ -12,19 +46,19 @@ def recursive_split(text, chunk_size, separators):
 
     splits = split_text(text, separator)
 
-    chunks = []
+    good_splits = []
 
     for split in splits:
         if len(split)<=chunk_size:
-            chunks.append(split)
+            good_splits.append(split)
         else:
-            chunks.extend(
+            good_splits.extend(
                 recursive_split(
                     split, chunk_size, remaining_separators
                 )
             )
 
-    return chunks
+    return merge_splits(good_splits, chunk_size)
     
 
 if __name__ == '__main__':
@@ -36,7 +70,7 @@ if __name__ == '__main__':
 
     chunks = recursive_split(
     text,
-    chunk_size=50,
+    chunk_size=90,
     separators=["\n\n", "\n", ". ", " ", ""]
     )
 
